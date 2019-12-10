@@ -33,6 +33,11 @@ Imports:
   dbplyr
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 2.1.0),
+    covr
 VignetteBuilder: knitr
 License: MIT + file LICENSE
+URL: https://github.com/edgararuiz/bigdataclass
+BugReports: https://github.com/edgararuiz/bigdataclass/issues
+

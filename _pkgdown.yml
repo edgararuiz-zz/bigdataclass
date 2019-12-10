@@ -1,0 +1,21 @@
+destination: docs
+
+reference:
+  - title: Class creation
+    contents:
+    - starts_with("bdc_create_")
+  - title: Workbook and project setup
+    contents:
+    - starts_with("bdc_build_")
+  - title: Data creation and setup
+    contents:
+    - starts_with("bdc_data_")
+  - title: Database operations
+    contents:
+    - starts_with("bdc_db")
+  - title: Utilities
+    contents:
+    - starts_with("bdc_utils")
+  - title: Data
+    contents:
+    - "customers"

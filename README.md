@@ -7,6 +7,10 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build
+status](https://travis-ci.com/edgararuiz/bigdataclass.svg?branch=master)](https://travis-ci.com/edgararuiz/bigdataclass)
+[![Codecov test
+coverage](https://codecov.io/gh/edgararuiz/bigdataclass/branch/master/graph/badge.svg)](https://codecov.io/gh/edgararuiz/bigdataclass?branch=master)
 <!-- badges: end -->
 
 The goal of `bigdataclass` is to provide an easy way to create the data
@@ -34,7 +38,7 @@ devtools::install_github("edgararuiz/bigdataclass")
     **big-data-class**
     
     ``` r
-    bdc_init_class_local()
+    bdc_create_class()
     ```
 
 ## Setup on a server with an external database
@@ -45,7 +49,7 @@ devtools::install_github("edgararuiz/bigdataclass")
 
 ``` r
 library(bigdataclass)
-cat(paste0(bdc_libraries(), collapse = "\n"))
+cat(paste0(bdc_utils_libraries(), collapse = "\n"))
 vroom
 fs
 purrr
@@ -76,6 +80,8 @@ readr
     password)*
     
     ``` r
+    library(DBI)
+    
     con <- dbConnect(RPostgres::Postgres(),
                      host = "localhost",
                      user = "admin_user",
@@ -94,28 +100,11 @@ readr
     ## Path to where the files are to be saved
     folder <- "usr/share/class"
     ## Creates the "retail" schema inside the database connection
-    con <- bdc_init_db(con)
+    con <- bdc_db_init(con)
     ## Creates the tables and views inside the schema
-    bdc_init_database(con = con, avg_daily_orders = 10000)
+    bdc_db_tables(con = con, avg_daily_orders = 10000)
     ## Builds the files and saves them to the path in "folder" 
-    bdc_init_files(con = con, folder = file.path(folder, "files"))
+    bdc_data_files(con = con, folder = file.path(folder, "files"))
     ## Downloads the books from the Gutenbergh API and saves them to the "folder"
-    bdc_init_books(file.path(folder, "books"))
-    ```
-
-### Run time
-
-1.  Create the project using the following defaults *(replace with
-    actual user name and password)*
-    
-    ``` r
-    library(bigdataclass)
-    folder <- "usr/share/class"
-    bdc_create_project(
-      folder = "/home/rstudio-user/big-data-class",
-      db_connection = "con <- connection_open(RPostgres::Postgres(), host = 'localhost', user = 'user', password = 'pwd', port = 5432,  dbname = 'postgres', bigint = 'integer')",
-      dbi_connection = "con <- dbConnect(RPostgres::Postgres(), host = 'localhost', user = 'user', password = 'pwd', port = 5432,  dbname = 'postgres', bigint = 'integer')",
-      files_path = file.path(folder, "files"),
-      books_path = file.path(folder, "books")
-    )
+    bdc_data_books(file.path(folder, "books"))
     ```
