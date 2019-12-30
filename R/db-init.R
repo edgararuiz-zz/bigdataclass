@@ -7,6 +7,7 @@ bdc_db_init <- function(con, schema_name = "retail", overwrite = FALSE) {
   UseMethod("bdc_db_init")
 }
 
+#' @export
 bdc_db_init.PqConnection <- function(con, 
                                      schema_name = "retail", overwrite = FALSE
                                      ) {

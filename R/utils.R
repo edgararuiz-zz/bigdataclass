@@ -1,18 +1,28 @@
 #' Returns a CAT outline of the class, based on the Rmd's titles
 #' @param files The full path of all of the Rmd files
 #' @export
-bdc_utils_outline <- function(files = book_files()) {
+bdc_utils_outline <- function(files = bdc_list_rmds()) {
   all_tocs <- lapply(files, toc)
-  all_tocs <- paste0(all_tocs, collapse = "")
+  all_tocs <- paste0(all_tocs, collapse = "") 
   cat(all_tocs)
 }
 #' Returns a vector with a list of libraries used in the workbook
 #' @param files The full path of all of the Rmd files
 #' @export
-bdc_utils_libraries <- function(files = book_files()) {
+bdc_utils_libraries <- function(files = bdc_list_rmds()) {
   lib_list <- lapply(files, get_libraries)
   lib_list <- Reduce(c, lib_list)
   unique(lib_list)
+}
+
+#' Returns a vector with the path to each workbook
+#' @param book_path The path to the workbook files
+#' @export
+bdc_list_rmds <- function(book_path = "workbook") {
+  book_dir <- dir(book_path)
+  book_files <- book_dir[grepl("Rmd", book_dir)]
+  book_files <- book_files[book_files != "index.Rmd"]
+  file.path(book_path, book_files)
 }
 
 toc <- function(file_path) {
@@ -49,7 +59,7 @@ install_command <- function() {
   cat(paste0("install.packages(c(", all_libs, "))"))
 }
 
-book_files <- function(book_path = system.file("workbook", package = "bigdataclass")
+pkg_workbook_files <- function(book_path = system.file("workbook", package = "bigdataclass")
 ) {
   book_dir <- dir(book_path)
   book_files <- book_dir[grepl("Rmd", book_dir)]

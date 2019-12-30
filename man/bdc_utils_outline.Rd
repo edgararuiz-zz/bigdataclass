@@ -4,7 +4,7 @@
 \alias{bdc_utils_outline}
 \title{Returns a CAT outline of the class, based on the Rmd's titles}
 \usage{
-bdc_utils_outline(files = book_files())
+bdc_utils_outline(files = bdc_list_rmds())
 }
 \arguments{
 \item{files}{The full path of all of the Rmd files}

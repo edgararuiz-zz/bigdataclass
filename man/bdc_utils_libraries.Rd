@@ -4,7 +4,7 @@
 \alias{bdc_utils_libraries}
 \title{Returns a vector with a list of libraries used in the workbook}
 \usage{
-bdc_utils_libraries(files = book_files())
+bdc_utils_libraries(files = bdc_list_rmds())
 }
 \arguments{
 \item{files}{The full path of all of the Rmd files}

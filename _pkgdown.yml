@@ -16,6 +16,7 @@ reference:
   - title: Utilities
     contents:
     - starts_with("bdc_utils")
+    - bdc_list_rmds
   - title: Data
     contents:
     - "customers"
