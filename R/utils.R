@@ -25,6 +25,56 @@ bdc_list_rmds <- function(book_path = "workbook") {
   file.path(book_path, book_files)
 }
 
+#' Copies the workbooks into another folder and re-numbers the steps
+#' @param book_path The path to the workbook files
+#' @param exercise_folder The folder address to save the new files to
+#' @export
+bdc_utils_exercises <- function(book_path = "workbook", exercise_folder = "") {
+  book_dir <- dir(book_path)
+  book_files <- book_dir[grepl("Rmd", book_dir)]
+  book_files <- book_files[book_files != "index.Rmd"]
+  book_files <- file.path(book_path, book_files)
+  lapply(
+    book_files,
+    copy_renumbered,
+    exercise_folder
+  )
+}
+
+copy_renumbered <- function(src_path, target_folder) {
+  workbook <- readLines(src_path)
+  has_title <- as.logical(lapply(workbook, function(x) substr(x, 1, 1) == "#"))
+  title_pos <-  which(has_title)
+  title_pos <- c(1, title_pos, length(workbook))
+  for(j in 2:length(title_pos)) {
+    from <- title_pos[j - 1]
+    to <- title_pos[j]
+    section <- workbook[from:to]
+    is_numbered <- as.logical(lapply(section, function(x) substr(x, 1, 2) == "1."))
+    locations <- from + which(is_numbered) - 1
+    lapply(
+      seq_along(locations),
+      function(x) {
+        l <- workbook[locations[x]]
+        l <- substr(l, 4, nchar(l))
+        l <- paste0(x, ". ", l)
+        workbook[locations[x]] <<- l
+      }
+    )
+  }
+  writeLines(
+    workbook,
+    if(target_folder == "") {
+      basename(src_path)
+    } else {
+      file.path(
+        target_folder, 
+        basename(src_path)
+      )
+    }
+  )
+}
+
 toc <- function(file_path) {
   re <- readLines(file_path)
   has_title <- as.logical(lapply(re, function(x) substr(x, 1, 1) == "#"))
