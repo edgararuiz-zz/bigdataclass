@@ -27,21 +27,25 @@ bdc_list_rmds <- function(book_path = "workbook") {
 
 #' Copies the workbooks into another folder and re-numbers the steps
 #' @param book_path The path to the workbook files
-#' @param exercise_folder The folder address to save the new files to
+#' @param target_folder The folder address to save the new files to
 #' @export
-bdc_utils_exercises <- function(book_path = "workbook", exercise_folder = "") {
+bdc_renumber_folder <- function(book_path = "workbook", target_folder = "") {
   book_dir <- dir(book_path)
   book_files <- book_dir[grepl("Rmd", book_dir)]
   book_files <- book_files[book_files != "index.Rmd"]
   book_files <- file.path(book_path, book_files)
   lapply(
     book_files,
-    copy_renumbered,
-    exercise_folder
+    bdc_renumber_file,
+    target_folder
   )
 }
 
-copy_renumbered <- function(src_path, target_folder) {
+#' Copies a workbook into another folder and re-numbers the steps
+#' @param src_path The path to the workbooks file
+#' @param target_folder The folder address to save the new file to
+#' @export
+bdc_renumber_file <- function(src_path, target_folder) {
   workbook <- readLines(src_path)
   has_title <- as.logical(lapply(workbook, function(x) substr(x, 1, 1) == "#"))
   title_pos <-  which(has_title)
